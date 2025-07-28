@@ -2,6 +2,7 @@ plugins {
     id("application")
     checkstyle
     id("org.sonarqube") version "6.2.0.5505"
+    jacoco
 }
 
 group = "hexlet.code"
@@ -26,4 +27,12 @@ sonar {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required = true
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
+    }
 }
