@@ -17,6 +17,10 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
+application {
+    mainClass = "hexlet.code.App"
+}
+
 sonar {
     properties {
         property("sonar.projectKey", "AMOrlovSev_java-project-78")
@@ -27,6 +31,10 @@ sonar {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
 }
 
 tasks.jacocoTestReport {
