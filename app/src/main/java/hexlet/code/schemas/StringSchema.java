@@ -1,48 +1,41 @@
 package hexlet.code.schemas;
 
 public class StringSchema {
-    String str;
-    int length;
-    String subStr;
-
-    Boolean isCorrect = true;
-
-    Boolean isRequired = false;
-    Boolean isMinLength = false;
-    Boolean isContains = false;
+    private String value;
+    private boolean isRequired = false;
+    private int minLength = -1; // -1 означает, что проверка отключена
+    private String mustContain = null;
 
     public StringSchema required() {
         isRequired = true;
         return this;
     }
 
-    public StringSchema minLength(int rLength) {
-        this.length = rLength;
-        isMinLength = true;
+    public StringSchema minLength(int length) {
+        minLength = length;
         return this;
     }
 
-    public StringSchema contains(String rSubStr) {
-        this.subStr = rSubStr;
-        isContains = true;
+    public StringSchema contains(String substring) {
+        mustContain = substring;
         return this;
     }
 
-    public boolean isValid(String rStr) {
-        this.str = rStr;
+    public boolean isValid(String str) {
+        this.value = str;
 
-        if (isRequired) {
-            isCorrect = str != null && !str.isEmpty();
+        if (isRequired && (str == null || str.isEmpty())) {
+            return false;
         }
 
-        if (isMinLength) {
-            isCorrect = (str != null ? str.length() : 0) >= length;
+        if (minLength != -1 && (str == null || str.length() < minLength)) {
+            return false;
         }
 
-        if (isContains) {
-            isCorrect = str != null && str.contains(subStr);
+        if (mustContain != null && (str == null || !str.contains(mustContain))) {
+            return false;
         }
 
-        return isCorrect;
+        return true;
     }
 }
