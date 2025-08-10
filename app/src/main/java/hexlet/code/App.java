@@ -31,5 +31,35 @@ public class App {
         System.out.println();
         var schema1 = v.string();
         System.out.println(schema1.minLength(10).minLength(4).isValid("Hexlet")); // true
+
+        System.out.println("----------------------------------------------");
+        System.out.println();
+        var schemaN = v.number();
+
+        System.out.println(schemaN.isValid(5)); // true
+
+// Пока не вызван метод required(), null считается валидным
+        System.out.println(schemaN.isValid(null)); // true
+        System.out.println(schemaN.positive().isValid(null)); // true
+
+        schemaN.required();
+
+        System.out.println();
+        System.out.println(schemaN.isValid(null)); // false
+        System.out.println(schemaN.isValid(10)); // true
+
+// Потому что ранее мы вызвали метод positive()
+        System.out.println();
+        System.out.println(schemaN.isValid(-10)); // false
+//  Ноль — не положительное число
+        System.out.println(schemaN.isValid(0)); // false
+
+        schemaN.range(5, 10);
+
+        System.out.println();
+        System.out.println(schemaN.isValid(5)); // true
+        System.out.println(schemaN.isValid(10)); // true
+        System.out.println(schemaN.isValid(4)); // false
+        System.out.println(schemaN.isValid(11)); // false
     }
 }

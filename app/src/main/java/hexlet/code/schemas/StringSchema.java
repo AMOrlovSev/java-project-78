@@ -1,9 +1,8 @@
 package hexlet.code.schemas;
 
 public class StringSchema {
-    private String value;
     private boolean isRequired = false;
-    private int minLength = -1; // -1 означает, что проверка отключена
+    private int minLength = -1;
     private String mustContain = null;
 
     public StringSchema required() {
@@ -21,18 +20,17 @@ public class StringSchema {
         return this;
     }
 
-    public boolean isValid(String str) {
-        this.value = str;
+    public boolean isValid(String value) {
 
-        if (isRequired && (str == null || str.isEmpty())) {
+        if (isRequired && (value == null || value.isEmpty())) {
             return false;
         }
 
-        if (minLength != -1 && (str == null || str.length() < minLength)) {
+        if (minLength != -1 && (value == null || value.length() < minLength)) {
             return false;
         }
 
-        if (mustContain != null && (str == null || !str.contains(mustContain))) {
+        if (mustContain != null && (value == null || !value.contains(mustContain))) {
             return false;
         }
 
