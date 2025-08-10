@@ -11,25 +11,25 @@ public class App {
         System.out.println(schema.isValid("")); // true
         System.out.println(schema.isValid(null)); // true
 
+        System.out.println();
         schema.required();
-
         System.out.println(schema.isValid(null)); // false
         System.out.println(schema.isValid("")); // false
-        System.out.println(schema.isValid("a")); // true
-        schema.isValid("what does the fox say"); // true
-        schema.isValid("hexlet"); // true
+        System.out.println(schema.isValid("what does the fox say")); // true
+        System.out.println(schema.isValid("hexlet")); // true
 
+        System.out.println();
+        System.out.println(schema.contains("wh").isValid("what does the fox say")); // true
+        System.out.println(schema.contains("what").isValid("what does the fox say")); // true
+        System.out.println(schema.contains("whatthe").isValid("what does the fox say")); // false
+
+        System.out.println(schema.isValid("what does the fox say")); // false
+// Здесь уже false, так как добавлена еще одна проверка contains("whatthe")
+
+// Если один валидатор вызывался несколько раз
+// то последний имеет приоритет (перетирает предыдущий)
         System.out.println();
         var schema1 = v.string();
-        schema1.minLength(10);
-        System.out.println(schema1.isValid("Hexlet"));
-        schema1.minLength(4);
-        System.out.println(schema1.isValid("Hexlet"));
-
-        System.out.println();
-        schema.contains("wh");
-        System.out.println(schema.isValid("what does the fox say")); // true
-        schema.contains("whatthe");
-        System.out.println(schema.isValid("what does the fox say"));
+        System.out.println(schema1.minLength(10).minLength(4).isValid("Hexlet")); // true
     }
 }

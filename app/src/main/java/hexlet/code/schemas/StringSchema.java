@@ -11,18 +11,21 @@ public class StringSchema {
     Boolean isMinLength = false;
     Boolean isContains = false;
 
-    public void required() {
+    public StringSchema required() {
         isRequired = true;
+        return this;
     }
 
-    public void minLength(int rLength) {
+    public StringSchema minLength(int rLength) {
         this.length = rLength;
         isMinLength = true;
+        return this;
     }
 
-    public void contains(String rSubStr) {
+    public StringSchema contains(String rSubStr) {
         this.subStr = rSubStr;
         isContains = true;
+        return this;
     }
 
     public boolean isValid(String rStr) {
