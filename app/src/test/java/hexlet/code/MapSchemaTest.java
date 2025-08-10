@@ -73,9 +73,9 @@ public class MapSchemaTest {
 
     @Test
     void testLargeMap() {
-        Map<String, Integer> largeMap = new HashMap<>();
+        Map<String, String> largeMap = new HashMap<>();
         for (int i = 0; i < 1000; i++) {
-            largeMap.put("key" + i, i);
+            largeMap.put("key" + i, "value" + i);
         }
 
         schema.sizeof(1000);
