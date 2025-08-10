@@ -1,12 +1,12 @@
 package hexlet.code.schemas;
 
-public class StringSchema {
-    private boolean isRequired = false;
+public class StringSchema extends BaseSchema<String> {
     private int minLength = -1;
     private String mustContain = null;
 
+    @Override
     public StringSchema required() {
-        isRequired = true;
+        super.required();
         return this;
     }
 
@@ -20,17 +20,21 @@ public class StringSchema {
         return this;
     }
 
+    @Override
     public boolean isValid(String value) {
-
         if (isRequired && (value == null || value.isEmpty())) {
             return false;
         }
 
-        if (minLength != -1 && (value == null || value.length() < minLength)) {
+        if (value == null) {
+            return true;
+        }
+
+        if (minLength != -1 && value.length() < minLength) {
             return false;
         }
 
-        if (mustContain != null && (value == null || !value.contains(mustContain))) {
+        if (mustContain != null && !value.contains(mustContain)) {
             return false;
         }
 

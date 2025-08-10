@@ -1,13 +1,13 @@
 package hexlet.code.schemas;
 
-public class NumberSchema {
-    private boolean isRequired = false;
+public class NumberSchema extends BaseSchema<Integer> {
     private boolean isPositive = false;
-    Integer rangeMin;
-    Integer rangeMax;
+    private Integer rangeMin;
+    private Integer rangeMax;
 
+    @Override
     public NumberSchema required() {
-        isRequired = true;
+        super.required();
         return this;
     }
 
@@ -22,12 +22,17 @@ public class NumberSchema {
         return this;
     }
 
+    @Override
     public boolean isValid(Integer value) {
         if (isRequired && value == null) {
             return false;
         }
 
-        if (value != null && (isPositive && value <= 0)) {
+        if (value == null) {
+            return true;
+        }
+
+        if (isPositive && value <= 0) {
             return false;
         }
 
