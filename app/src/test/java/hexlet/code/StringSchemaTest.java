@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class StringSchemaTest {
+public final class StringSchemaTest {
 
-    Validator v;
+    private Validator v;
 
-    StringSchema schema;
+    private StringSchema schema;
 
     @BeforeEach
     public void beforeEach() {
