@@ -20,32 +20,41 @@ public class StringSchemaTest {
     }
 
     @Test
-    public void notImplementsTest() {
-        assertTrue(schema.isValid(""));
+    void testNonRequiredString() {
         assertTrue(schema.isValid(null));
+        assertTrue(schema.isValid(""));
+        assertTrue(schema.isValid("test"));
     }
 
     @Test
-    public void requiredTest() {
+    void testRequiredString() {
         schema.required();
-        assertFalse(schema.isValid(""));
         assertFalse(schema.isValid(null));
-        assertTrue(schema.isValid("a"));
+        assertFalse(schema.isValid(""));
+        assertTrue(schema.isValid("test"));
     }
 
     @Test
-    public void minLengthTest() {
-        schema.minLength(4);
-        assertTrue(schema.isValid("Hexlet"));
-        schema.minLength(10);
-        assertFalse(schema.isValid("Hexlet"));
+    void testMinLength() {
+        schema.minLength(3);
+        assertFalse(schema.isValid("ab"));
+        assertTrue(schema.isValid("abc"));
+        assertTrue(schema.isValid("abcd"));
     }
 
     @Test
-    public void containsTest() {
-        schema.contains("wh");
-        assertTrue(schema.isValid("what does the fox say"));
-        schema.contains("whatthe");
-        assertFalse(schema.isValid("what does the fox say"));
+    void testContains() {
+        schema.contains("hello");
+        assertFalse(schema.isValid("hi"));
+        assertTrue(schema.isValid("hello world"));
+    }
+
+    @Test
+    void testCombinedRules() {
+        schema.required().minLength(5).contains("test");
+        assertFalse(schema.isValid(null));
+        assertFalse(schema.isValid("tes"));
+        assertFalse(schema.isValid("hello"));
+        assertTrue(schema.isValid("test 123"));
     }
 }
