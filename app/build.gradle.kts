@@ -1,5 +1,5 @@
 plugins {
-    id("application")
+    id("java")
     checkstyle
     id("org.sonarqube") version "6.2.0.5505"
     jacoco
@@ -15,10 +15,6 @@ repositories {
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-}
-
-application {
-    mainClass = "hexlet.code.App"
 }
 
 sonar {
