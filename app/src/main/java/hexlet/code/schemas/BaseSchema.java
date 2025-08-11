@@ -1,19 +1,29 @@
 package hexlet.code.schemas;
 
-public abstract class BaseSchema<T> {
-    protected boolean isRequired = false;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Predicate;
 
-    /**
-     * Marks the schema as required, meaning the value cannot be null.
-     * Subclasses should call this method first when overriding it:
-     * {@code super.required();}
-     *
-     * @return the current schema instance for method chaining
-     */
+public abstract class BaseSchema<T> {
+    protected Map<String, Predicate<T>> checks = new LinkedHashMap<>();
+    protected boolean required = false;
+
+    protected final void addCheck(String name, Predicate<T> validate) {
+        checks.put(name, validate);
+    }
+
     public BaseSchema<T> required() {
-        this.isRequired = true;
+        this.required = true;
+        addCheck("required", value -> value != null);
         return this;
     }
 
-    public abstract boolean isValid(T value);
+    public final boolean isValid(T value) {
+        if (value == null) {
+            return !required;
+        }
+
+        return checks.values().stream()
+                .allMatch(predicate -> predicate.test(value));
+    }
 }

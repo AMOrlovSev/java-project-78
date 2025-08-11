@@ -1,60 +1,35 @@
 package hexlet.code.schemas;
 
 import java.util.Map;
+import java.util.function.Predicate;
 
 public final class MapSchema extends BaseSchema<Map<String, String>> {
-    private int mapSize = -1;
-    private Map<String, BaseSchema<String>> shapeSchemas;
+    public MapSchema sizeof(int size) {
+        addCheck("sizeof" + size, value -> value.size() == size);
+        return this;
+    }
+
+    public MapSchema shape(Map<String, BaseSchema<String>> schemas) {
+        Predicate<Map<String, String>> shapeCheck = map -> {
+            for (var entry : schemas.entrySet()) {
+                String key = entry.getKey();
+                String value = map.get(key);
+                BaseSchema<String> schema = entry.getValue();
+
+                if (!schema.isValid(value)) {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        addCheck("shape", shapeCheck);
+        return this;
+    }
 
     @Override
     public MapSchema required() {
         super.required();
         return this;
-    }
-
-    public MapSchema sizeof(int size) {
-        mapSize = size;
-        return this;
-    }
-
-    public MapSchema shape(Map<String, BaseSchema<String>> schemas) {
-        shapeSchemas = schemas;
-        return this;
-    }
-
-    @Override
-    public boolean isValid(Map<String, String> map) {
-
-        if (isRequired && map == null) {
-            return false;
-        }
-
-        if (map == null) {
-            return true;
-        }
-
-        if (mapSize != -1 && map.size() != mapSize) {
-            return false;
-        }
-
-        if (shapeSchemas != null && !isValidShape(map)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean isValidShape(Map<String, String> inputMap) {
-
-        for (var set : shapeSchemas.entrySet()) {
-            String key = set.getKey();
-            String value = inputMap.get(key);
-            BaseSchema<String> schemaValue = set.getValue();
-            if (!schemaValue.isValid(value)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }
